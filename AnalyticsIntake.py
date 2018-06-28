@@ -114,8 +114,8 @@ class AnalyticsIntake(object):
             self.publish_metrics(self.logger, response)
             now = datetime.now()
             self.logger.info('Scheduling next run at {}'.format(
-                now + timedelta(minutes=60)))
-            time.sleep(3600.0 - ((time.time() - starttime) % 3600.0))
+                now + timedelta(seconds=self.delay)))
+            time.sleep(self.delay - ((time.time() - starttime) % self.delay))
 
 
 if __name__ == '__main__':
