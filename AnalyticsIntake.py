@@ -40,7 +40,7 @@ class AnalyticsIntake(object):
         else:
             raise ValueError('TOPIC environment variable not set')
         if 'DELAY' in os.environ:
-            self.delay = os.environ['DELAY']
+            self.delay = int(os.environ['DELAY'])
             self.logger.info("Set DELAY: {} s".format(self.delay))
         else:
             self.delay = 3600
@@ -93,13 +93,13 @@ class AnalyticsIntake(object):
         return response
 
     def publish_metrics(self, logger, response):
-        kafka_brokers = ['mslave1.admintome.lab:31000']
+        #kafka_brokers = ['mslave1.admintome.lab:31000']
         logger.info(
-            'Publishing site data to Kafka Broker {}'.format(kafka_brokers))
-        mykafka = MyKafka(kafka_brokers)
+            'Publishing site data to Kafka Broker {}'.format(self.kafka_brokers))
+        mykafka = MyKafka(self.kafka_brokers)
         mykafka.send_page_data(response, self.topic)
         logger.info(
-            'Successfully published site data to Kafka Broker {}'.format(kafka_brokers))
+            'Successfully published site data to Kafka Broker {}'.format(self.kafka_brokers))
 
     def main(self):
         starttime = time.time()
